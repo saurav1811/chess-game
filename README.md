@@ -18,9 +18,17 @@ move from its current position. For the above input, the output would be **G2**.
 
 ## Assumptions
 * Assuming that PositionLabels (eg:- D5, A7 etc.) passed in input are always valid and not having any validation in place for that.
+* Assuming that everytime when service method is called, the chess board is empty and just contains one piece.
 
 ## Design Decisions
-* Filter out invalid next positions from result for a piece with given start position. If in case, there are no valid positions, then result an empty result.
+* Filter out invalid next positions from result for a piece with given start position. If in case, there are no valid positions, then result is empty.
+
+## How to build the app?
+`
+./gradlew clean build
+`
 
 ## How to run the app?
-
+`
+./gradlew clean run
+`
