@@ -7,6 +7,10 @@ application {
     mainClass.set("com.technogise.chessgame.MainKt")
 }
 
+tasks.named<JavaExec>("run") {
+    standardInput = System.`in`
+}
+
 repositories {
     mavenCentral()
 }
@@ -19,6 +23,7 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
+
 kotlin {
     jvmToolchain(21)
 }
