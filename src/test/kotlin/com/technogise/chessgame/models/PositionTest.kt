@@ -46,6 +46,12 @@ class PositionTest {
    val position = Position.of("D3")
    position.horizontalMoveValidPositions() shouldBe listOf("A3", "B3", "C3", "E3", "F3", "G3", "H3")
   }
+
+  @Test
+  fun `SHOULD return all horizontal positions with respect to current position with fixed steps`() {
+   val position = Position.of("D3")
+   position.horizontalMoveValidPositions(1) shouldBe listOf("C3", "E3")
+  }
  }
 
  @Nested
@@ -54,6 +60,12 @@ class PositionTest {
   fun `SHOULD return all vertical positions with respect to current position`() {
    val position = Position.of("D3")
    position.verticalMoveValidPositions() shouldBe listOf("D1", "D2", "D4", "D5", "D6", "D7", "D8")
+  }
+
+  @Test
+  fun `SHOULD return all vertical positions with respect to current position with fixed steps`() {
+   val position = Position.of("D3")
+   position.verticalMoveValidPositions(2) shouldBe listOf("D1", "D2", "D4", "D5")
   }
  }
 
@@ -66,9 +78,21 @@ class PositionTest {
   }
 
   @Test
+  fun `SHOULD return all valid forward left diagonal positions with respect to current position with fixed steps`() {
+   val position = Position.of("D3")
+   position.forwardLeftDiagonalMoveValidPositions(2) shouldBe listOf("C4", "B5")
+  }
+
+  @Test
   fun `SHOULD return all valid forward right diagonal positions with respect to current position`() {
    val position = Position.of("D3")
    position.forwardRightDiagonalMoveValidPositions() shouldBe listOf("E4", "F5", "G6", "H7")
+  }
+
+  @Test
+  fun `SHOULD return all valid forward right diagonal positions with respect to current position with fixed steps`() {
+   val position = Position.of("D3")
+   position.forwardRightDiagonalMoveValidPositions(1) shouldBe listOf("E4")
   }
 
   @Test
@@ -78,9 +102,21 @@ class PositionTest {
   }
 
   @Test
+  fun `SHOULD return all valid backward right diagonal positions with respect to current position with fixed steps`() {
+   val position = Position.of("D3")
+   position.backwardRightDiagonalMoveValidPositions(1) shouldBe listOf("E2")
+  }
+
+  @Test
   fun `SHOULD return all valid backward left diagonal positions with respect to current position`() {
    val position = Position.of("D3")
    position.backwardLeftDiagonalMoveValidPositions() shouldBe listOf("C2", "B1")
+  }
+
+  @Test
+  fun `SHOULD return all valid backward left diagonal positions with respect to current position with fixed steps`() {
+   val position = Position.of("D3")
+   position.backwardLeftDiagonalMoveValidPositions(1) shouldBe listOf("C2")
   }
  }
 }

@@ -5,20 +5,17 @@ import com.technogise.chessgame.models.Position
 import com.technogise.chessgame.models.PositionLabel
 
 class King: Piece() {
-    // Directions: vertical, horizontal, and diagonal (8 directions)
-    private val directions = listOf(
-        Pair(-1, -1), Pair(-1, 0), Pair(-1, 1),
-        Pair(0, -1),               Pair(0, 1),
-        Pair(1, -1),  Pair(1, 0),  Pair(1, 1)
-    )
-
     override fun nextValidPositionsFrom(startPosition: Position): List<PositionLabel> {
-        val nextValidPositions = directions.map { (rowChange, columnChange) ->
-            Position(
-                rowIndex = startPosition.rowIndex + rowChange,
-                columnIndex = startPosition.columnIndex + columnChange
-            )
-        }.filter { it.isValid() }
-        return nextValidPositions.map { it.toPositionLabel() }
+        val nextValidHorizontalPositions = startPosition.horizontalMoveValidPositions(1)
+        val nextValidVerticalPositions = startPosition.verticalMoveValidPositions(1)
+
+        val nextValidForwardLeftDiagonalPositions = startPosition.forwardLeftDiagonalMoveValidPositions(1)
+        val nextValidForwardRightDiagonalPositions = startPosition.forwardRightDiagonalMoveValidPositions(1)
+        val nextValidBackwardRightDiagonalPositions = startPosition.backwardRightDiagonalMoveValidPositions(1)
+        val nextValidBackwardLeftDiagonalPositions = startPosition.backwardLeftDiagonalMoveValidPositions(1)
+
+        return (nextValidHorizontalPositions + nextValidVerticalPositions
+                + nextValidForwardLeftDiagonalPositions + nextValidForwardRightDiagonalPositions
+                + nextValidBackwardRightDiagonalPositions + nextValidBackwardLeftDiagonalPositions)
     }
 }

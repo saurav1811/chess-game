@@ -35,76 +35,92 @@ data class Position(
 
     fun toPositionLabel(): PositionLabel = columnsLabels[columnIndex] + rowLabels[rowIndex]
 
-    fun horizontalMoveValidPositions() = (0..7).filter { it != columnIndex }.map { colIdx ->
-        Position(
-            rowIndex = rowIndex,
-            columnIndex = colIdx
-        )
-    }.filter { it.isValid() }.map { it.toPositionLabel() }
+    fun horizontalMoveValidPositions(steps: Int = 0): List<PositionLabel> {
+        return (0..7).filter {
+            (if (steps > 0) it >= (columnIndex - steps) && it <= (columnIndex + steps) else true) && it != columnIndex
+        }.map { colIdx ->
+            Position(
+                rowIndex = rowIndex,
+                columnIndex = colIdx
+            )
+        }.filter { it.isValid() }.map { it.toPositionLabel() }
+    }
 
-    fun verticalMoveValidPositions() = (0..7).filter { it != rowIndex }.map { rowIdx ->
-        Position(
-            rowIndex = rowIdx,
-            columnIndex = columnIndex
-        )
-    }.filter { it.isValid() }.map { it.toPositionLabel() }
+    fun verticalMoveValidPositions(steps: Int = 0): List<PositionLabel> {
+        return (0..7).filter {
+            (if (steps > 0) it >= (rowIndex - steps) && it <= (rowIndex + steps) else true) && it != rowIndex
+        }.map { rowIdx ->
+            Position(
+                rowIndex = rowIdx,
+                columnIndex = columnIndex
+            )
+        }.filter { it.isValid() }.map { it.toPositionLabel() }
+    }
 
-    fun forwardLeftDiagonalMoveValidPositions() : List<PositionLabel> {
+    fun forwardLeftDiagonalMoveValidPositions(steps: Int = 0) : List<PositionLabel> {
         var newRowIndex = (rowIndex + 1)
         var newColumnIndex = (columnIndex - 1)
+        var step = 1
         val validPositions = mutableListOf<Position>()
-        while (newRowIndex in ((rowIndex + 1)..7) && newColumnIndex in (0..<columnIndex)) {
+        while (newRowIndex in ((rowIndex + 1)..7) && newColumnIndex in (0..<columnIndex) && ((steps != 0 && step <= steps) || steps == 0)) {
             validPositions.add(Position(
                 rowIndex = newRowIndex,
                 columnIndex = newColumnIndex
             ))
             newRowIndex += 1
             newColumnIndex -= 1
+            step++
         }
         return validPositions.toList().filter { it.isValid() }.map { it.toPositionLabel() }
     }
 
-    fun forwardRightDiagonalMoveValidPositions() : List<PositionLabel> {
+    fun forwardRightDiagonalMoveValidPositions(steps: Int = 0) : List<PositionLabel> {
         var newRowIndex = (rowIndex + 1)
         var newColumnIndex = (columnIndex + 1)
+        var step = 1
         val validPositions = mutableListOf<Position>()
-        while (newRowIndex in ((rowIndex + 1)..7) && newColumnIndex in ((columnIndex + 1)..7)) {
+        while (newRowIndex in ((rowIndex + 1)..7) && newColumnIndex in ((columnIndex + 1)..7) && ((steps != 0 && step <= steps) || steps == 0)) {
             validPositions.add(Position(
                 rowIndex = newRowIndex,
                 columnIndex = newColumnIndex
             ))
             newRowIndex += 1
             newColumnIndex += 1
+            step++
         }
         return validPositions.toList().filter { it.isValid() }.map { it.toPositionLabel() }
     }
 
-    fun backwardRightDiagonalMoveValidPositions() : List<PositionLabel> {
+    fun backwardRightDiagonalMoveValidPositions(steps: Int = 0) : List<PositionLabel> {
         var newRowIndex = (rowIndex - 1)
         var newColumnIndex = (columnIndex + 1)
+        var step = 1
         val validPositions = mutableListOf<Position>()
-        while (newRowIndex in (0..(rowIndex + 1)) && newColumnIndex in ((columnIndex + 1)..7)) {
+        while (newRowIndex in (0..(rowIndex + 1)) && newColumnIndex in ((columnIndex + 1)..7) && ((steps != 0 && step <= steps) || steps == 0)) {
             validPositions.add(Position(
                 rowIndex = newRowIndex,
                 columnIndex = newColumnIndex
             ))
             newRowIndex -= 1
             newColumnIndex += 1
+            step++
         }
         return validPositions.toList().filter { it.isValid() }.map { it.toPositionLabel() }
     }
 
-    fun backwardLeftDiagonalMoveValidPositions() : List<PositionLabel> {
+    fun backwardLeftDiagonalMoveValidPositions(steps: Int = 0) : List<PositionLabel> {
         var newRowIndex = (rowIndex - 1)
         var newColumnIndex = (columnIndex - 1)
+        var step = 1
         val validPositions = mutableListOf<Position>()
-        while (newRowIndex in (0..(rowIndex + 1)) && newColumnIndex in (0..<columnIndex)) {
+        while (newRowIndex in (0..(rowIndex + 1)) && newColumnIndex in (0..<columnIndex) && ((steps != 0 && step <= steps) || steps == 0)) {
             validPositions.add(Position(
                 rowIndex = newRowIndex,
                 columnIndex = newColumnIndex
             ))
             newRowIndex -= 1
             newColumnIndex -= 1
+            step++
         }
         return validPositions.toList().filter { it.isValid() }.map { it.toPositionLabel() }
     }
