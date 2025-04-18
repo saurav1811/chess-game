@@ -1,10 +1,16 @@
 package com.technogise.chessgame.models
 
 import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class PositionTest {
+ @BeforeEach
+ fun setup() {
+  Chessboard.pieceByPosition.clear()
+ }
+
  @Nested
  inner class ToPosition {
   @Test
@@ -48,6 +54,13 @@ class PositionTest {
   }
 
   @Test
+  fun `SHOULD return left horizontal positions with respect to current position and chessboard contains other occupied positions`() {
+   Chessboard.pieceByPosition["B3"] = "OPPONENT"
+   val position = Position.of("D3")
+   position.leftHorizontalMoveValidPositions() shouldBe listOf("C3", "B3")
+  }
+
+  @Test
   fun `SHOULD return left horizontal positions with respect to current position with fixed steps`() {
    val position = Position.of("D3")
    position.leftHorizontalMoveValidPositions(1) shouldBe listOf("C3")
@@ -64,6 +77,13 @@ class PositionTest {
    val position = Position.of("D3")
    position.rightHorizontalMoveValidPositions(1) shouldBe listOf("E3")
   }
+
+  @Test
+  fun `SHOULD return right horizontal positions with respect to current position with fixed steps and chessboard contains other occupied positions`() {
+   Chessboard.pieceByPosition["E3"] = "OPPONENT"
+   val position = Position.of("D3")
+   position.rightHorizontalMoveValidPositions(1) shouldBe listOf("E3")
+  }
  }
 
  @Nested
@@ -72,6 +92,13 @@ class PositionTest {
   fun `SHOULD return forward vertical positions with respect to current position`() {
    val position = Position.of("D3")
    position.forwardVerticalMoveValidPositions() shouldBe listOf("D4", "D5", "D6", "D7", "D8")
+  }
+
+  @Test
+  fun `SHOULD return forward vertical positions with respect to current position and chessboard contains other occupied positions`() {
+   Chessboard.pieceByPosition["D6"] = "OPPONENT"
+   val position = Position.of("D3")
+   position.forwardVerticalMoveValidPositions() shouldBe listOf("D4", "D5", "D6")
   }
 
   @Test
@@ -91,6 +118,13 @@ class PositionTest {
    val position = Position.of("D3")
    position.backwardVerticalMoveValidPositions(1) shouldBe listOf("D2")
   }
+
+  @Test
+  fun `SHOULD return backward vertical positions with respect to current position with fixed steps and chessboard contains other occupied positions`() {
+   Chessboard.pieceByPosition["D2"] = "OPPONENT"
+   val position = Position.of("D3")
+   position.backwardVerticalMoveValidPositions(1) shouldBe listOf("D2")
+  }
  }
 
  @Nested
@@ -99,6 +133,13 @@ class PositionTest {
   fun `SHOULD return all valid forward left diagonal positions with respect to current position`() {
    val position = Position.of("D3")
    position.forwardLeftDiagonalMoveValidPositions() shouldBe listOf("C4", "B5", "A6")
+  }
+
+  @Test
+  fun `SHOULD return all valid forward left diagonal positions with respect to current position and chessboard contains other occupied positions`() {
+   Chessboard.pieceByPosition["B5"] = "OPPONENT"
+   val position = Position.of("D3")
+   position.forwardLeftDiagonalMoveValidPositions() shouldBe listOf("C4", "B5")
   }
 
   @Test
@@ -120,9 +161,24 @@ class PositionTest {
   }
 
   @Test
+  fun `SHOULD return all valid forward right diagonal positions with respect to current position with fixed steps and chessboard contains other occupied positions`() {
+   Chessboard.pieceByPosition["E4"] = "OPPONENT"
+   val position = Position.of("D3")
+   position.forwardRightDiagonalMoveValidPositions(1) shouldBe listOf("E4")
+  }
+
+  @Test
   fun `SHOULD return all valid backward right diagonal positions with respect to current position`() {
    val position = Position.of("D3")
    position.backwardRightDiagonalMoveValidPositions() shouldBe listOf("E2", "F1")
+  }
+
+  @Test
+  fun `SHOULD return all valid backward right diagonal positions with respect to current position and chessboard contains other occupied positions`() {
+   Chessboard.pieceByPosition["F2"] = "OPPONENT"
+   Chessboard.pieceByPosition["E2"] = "OPPONENT"
+   val position = Position.of("D3")
+   position.backwardRightDiagonalMoveValidPositions() shouldBe listOf("E2")
   }
 
   @Test
@@ -139,6 +195,13 @@ class PositionTest {
 
   @Test
   fun `SHOULD return all valid backward left diagonal positions with respect to current position with fixed steps`() {
+   val position = Position.of("D3")
+   position.backwardLeftDiagonalMoveValidPositions(1) shouldBe listOf("C2")
+  }
+
+  @Test
+  fun `SHOULD return all valid backward left diagonal positions with respect to current position with fixed steps and chessboard contains other occupied positions`() {
+   Chessboard.pieceByPosition["C2"] = "OPPONENT"
    val position = Position.of("D3")
    position.backwardLeftDiagonalMoveValidPositions(1) shouldBe listOf("C2")
   }

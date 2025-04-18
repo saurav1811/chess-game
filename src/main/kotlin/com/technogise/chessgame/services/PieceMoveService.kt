@@ -1,5 +1,6 @@
 package com.technogise.chessgame.services
 
+import com.technogise.chessgame.models.Chessboard
 import com.technogise.chessgame.models.PieceName
 import com.technogise.chessgame.models.PieceName.BISHOP
 import com.technogise.chessgame.models.PieceName.HORSE
@@ -18,9 +19,17 @@ import com.technogise.chessgame.models.pieces.Rook
 
 class PieceMoveService {
 
-    fun nextValidPositionsFor(pieceName: PieceName, startPositionLabel: PositionLabel): List<PositionLabel> {
+    fun nextValidPositionsFor(
+        pieceName: PieceName,
+        startPositionLabel: PositionLabel,
+        opponentStartPositionLabel: PositionLabel? = null
+    ): List<PositionLabel> {
         val piece = getPiece(pieceName)
         val startPosition = Position.of(startPositionLabel)
+
+        if (opponentStartPositionLabel != null) {
+            Chessboard.pieceByPosition[opponentStartPositionLabel] = "OPPONENT"
+        }
 
         return piece.nextValidPositionsFrom(startPosition)
     }

@@ -36,59 +36,102 @@ data class Position(
     fun toPositionLabel(): PositionLabel = columnsLabels[columnIndex] + rowLabels[rowIndex]
 
     fun leftHorizontalMoveValidPositions(steps: Int = 0): List<PositionLabel> {
-        return (columnIndex.downTo(0)).filter {
-            (if (steps > 0) it >= (columnIndex - steps) && it <= (columnIndex + steps) else true) && it != columnIndex
-        }.map { colIdx ->
-            Position(
-                rowIndex = rowIndex,
-                columnIndex = colIdx
-            )
-        }.filter { it.isValid() }.map { it.toPositionLabel() }
+        val chessboardPositions = Chessboard.pieceByPosition.keys.map { of(it) }
+        val result = mutableListOf<String>()
+
+        for (colIdx in columnIndex downTo 0) {
+            if (lookUptoColumn(steps, colIdx)) {
+                continue
+            }
+
+            val position = Position(rowIndex, colIdx)
+            if (position.isValid()) {
+                result.add(position.toPositionLabel())
+            }
+
+            if (chessboardPositions.contains(position)) {
+                break
+            }
+        }
+        return result.toList()
     }
 
     fun rightHorizontalMoveValidPositions(steps: Int = 0): List<PositionLabel> {
-        return (columnIndex..7).filter {
-            (if (steps > 0) it >= (columnIndex - steps) && it <= (columnIndex + steps) else true) && it != columnIndex
-        }.map { colIdx ->
-            Position(
-                rowIndex = rowIndex,
-                columnIndex = colIdx
-            )
-        }.filter { it.isValid() }.map { it.toPositionLabel() }
+        val chessboardPositions = Chessboard.pieceByPosition.keys.map { of(it) }
+        val result = mutableListOf<String>()
+
+        for (colIdx in columnIndex .. 7) {
+            if (lookUptoColumn(steps, colIdx)) {
+                continue
+            }
+
+            val position = Position(rowIndex, colIdx)
+            if (position.isValid()) {
+                result.add(position.toPositionLabel())
+            }
+
+            if (chessboardPositions.contains(position)) {
+                break
+            }
+        }
+        return result.toList()
     }
 
     fun forwardVerticalMoveValidPositions(steps: Int = 0): List<PositionLabel> {
-        return (rowIndex..7).filter {
-            (if (steps > 0) it >= (rowIndex - steps) && it <= (rowIndex + steps) else true) && it != rowIndex
-        }.map { rowIdx ->
-            Position(
-                rowIndex = rowIdx,
-                columnIndex = columnIndex
-            )
-        }.filter { it.isValid() }.map { it.toPositionLabel() }
+        val chessboardPositions = Chessboard.pieceByPosition.keys.map { of(it) }
+        val result = mutableListOf<String>()
+
+        for (rowIdx in rowIndex .. 7) {
+            if (lookUptoRow(steps, rowIdx)) {
+                continue
+            }
+
+            val position = Position(rowIdx, columnIndex)
+            if (position.isValid()) {
+                result.add(position.toPositionLabel())
+            }
+
+            if (chessboardPositions.contains(position)) {
+                break
+            }
+        }
+        return result.toList()
     }
 
     fun backwardVerticalMoveValidPositions(steps: Int = 0): List<PositionLabel> {
-        return (rowIndex.downTo(0)).filter {
-            (if (steps > 0) it >= (rowIndex - steps) && it <= (rowIndex + steps) else true) && it != rowIndex
-        }.map { rowIdx ->
-            Position(
-                rowIndex = rowIdx,
-                columnIndex = columnIndex
-            )
-        }.filter { it.isValid() }.map { it.toPositionLabel() }
+        val chessboardPositions = Chessboard.pieceByPosition.keys.map { of(it) }
+        val result = mutableListOf<String>()
+
+        for (rowIdx in rowIndex.downTo(0)) {
+            if (lookUptoRow(steps, rowIdx)) {
+                continue
+            }
+
+            val position = Position(rowIdx, columnIndex)
+            if (position.isValid()) {
+                result.add(position.toPositionLabel())
+            }
+
+            if (chessboardPositions.contains(position)) {
+                break
+            }
+        }
+        return result.toList()
     }
 
     fun forwardLeftDiagonalMoveValidPositions(steps: Int = 0) : List<PositionLabel> {
+        val chessboardPositions = Chessboard.pieceByPosition.keys.map { of(it) }
         var newRowIndex = (rowIndex + 1)
         var newColumnIndex = (columnIndex - 1)
         var step = 1
         val validPositions = mutableListOf<Position>()
         while (newRowIndex in ((rowIndex + 1)..7) && newColumnIndex in (0..<columnIndex) && ((steps != 0 && step <= steps) || steps == 0)) {
-            validPositions.add(Position(
+            val position = Position(
                 rowIndex = newRowIndex,
                 columnIndex = newColumnIndex
-            ))
+            )
+            validPositions.add(position)
+            if (chessboardPositions.contains(position)) break
             newRowIndex += 1
             newColumnIndex -= 1
             step++
@@ -97,15 +140,18 @@ data class Position(
     }
 
     fun forwardRightDiagonalMoveValidPositions(steps: Int = 0) : List<PositionLabel> {
+        val chessboardPositions = Chessboard.pieceByPosition.keys.map { of(it) }
         var newRowIndex = (rowIndex + 1)
         var newColumnIndex = (columnIndex + 1)
         var step = 1
         val validPositions = mutableListOf<Position>()
         while (newRowIndex in ((rowIndex + 1)..7) && newColumnIndex in ((columnIndex + 1)..7) && ((steps != 0 && step <= steps) || steps == 0)) {
-            validPositions.add(Position(
+            val position = Position(
                 rowIndex = newRowIndex,
                 columnIndex = newColumnIndex
-            ))
+            )
+            validPositions.add(position)
+            if (chessboardPositions.contains(position)) break
             newRowIndex += 1
             newColumnIndex += 1
             step++
@@ -114,15 +160,18 @@ data class Position(
     }
 
     fun backwardRightDiagonalMoveValidPositions(steps: Int = 0) : List<PositionLabel> {
+        val chessboardPositions = Chessboard.pieceByPosition.keys.map { of(it) }
         var newRowIndex = (rowIndex - 1)
         var newColumnIndex = (columnIndex + 1)
         var step = 1
         val validPositions = mutableListOf<Position>()
         while (newRowIndex in (0..(rowIndex + 1)) && newColumnIndex in ((columnIndex + 1)..7) && ((steps != 0 && step <= steps) || steps == 0)) {
-            validPositions.add(Position(
+            val position = Position(
                 rowIndex = newRowIndex,
                 columnIndex = newColumnIndex
-            ))
+            )
+            validPositions.add(position)
+            if (chessboardPositions.contains(position)) break
             newRowIndex -= 1
             newColumnIndex += 1
             step++
@@ -131,21 +180,30 @@ data class Position(
     }
 
     fun backwardLeftDiagonalMoveValidPositions(steps: Int = 0) : List<PositionLabel> {
+        val chessboardPositions = Chessboard.pieceByPosition.keys.map { of(it) }
         var newRowIndex = (rowIndex - 1)
         var newColumnIndex = (columnIndex - 1)
         var step = 1
         val validPositions = mutableListOf<Position>()
         while (newRowIndex in (0..(rowIndex + 1)) && newColumnIndex in (0..<columnIndex) && ((steps != 0 && step <= steps) || steps == 0)) {
-            validPositions.add(Position(
+            val position = Position(
                 rowIndex = newRowIndex,
                 columnIndex = newColumnIndex
-            ))
+            )
+            validPositions.add(position)
+            if (chessboardPositions.contains(position)) break
             newRowIndex -= 1
             newColumnIndex -= 1
             step++
         }
         return validPositions.toList().filter { it.isValid() }.map { it.toPositionLabel() }
     }
+
+    private fun lookUptoRow(steps: Int, rowIdx: Int) =
+        (steps > 0 && (rowIdx < rowIndex - steps || rowIdx > rowIndex + steps)) || rowIdx == rowIndex
+
+    private fun lookUptoColumn(steps: Int, colIdx: Int) =
+        (steps > 0 && (colIdx < columnIndex - steps || colIdx > columnIndex + steps)) || colIdx == columnIndex
 }
 
 typealias PositionLabel = String

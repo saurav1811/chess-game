@@ -32,3 +32,22 @@ move from its current position. For the above input, the output would be **G2**.
 `
 ./gradlew clean run
 `
+
+## Extension
+
+We are considering one more opponent piece on the board along with current piece in such a way 
+that there might be overlaps in the valid move positions for both pieces.
+
+We have to return the valid move positions for our current piece now (considering other piece).
+
+**Input**
+```
+ROOK, D5
+OPPONENT, D7
+```
+
+**Output**
+```
+D1, D2, D3, D4, D6, D7, A5, B5, C5, E5, F5, G5, H5
+```
+
