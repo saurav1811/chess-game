@@ -5,19 +5,52 @@ import com.technogise.chessgame.models.Position
 import com.technogise.chessgame.models.PositionLabel
 
 class Horse: Piece() {
-    // 8 possible L-shaped moves
-    private val moves = listOf(
-        Pair(2, 1), Pair(2, -1), Pair(-2, 1), Pair(-2, -1),
-        Pair(1, 2), Pair(1, -2), Pair(-1, 2), Pair(-1, -2)
-    )
-
     override fun nextValidPositionsFrom(startPosition: Position): List<PositionLabel> {
-        val nextValidPositions = moves.map { (rowChange, columnChange) ->
-            Position(
-                rowIndex = startPosition.rowIndex + rowChange,
-                columnIndex = startPosition.columnIndex + columnChange
-            )
-        }.filter { it.isValid() }
-        return nextValidPositions.map { it.toPositionLabel() }
+        return forwardValidLShapedMoves(startPosition) + rightValidLShapedMoves(startPosition) +
+                backwardValidLShapedMoves(startPosition) + leftValidLShapedMoves(startPosition)
     }
+
+    private fun forwardValidLShapedMoves(startPosition: Position): List<PositionLabel> = listOf(
+        Position(
+            rowIndex = startPosition.rowIndex + 2,
+            columnIndex = startPosition.columnIndex - 1,
+        ),
+        Position(
+            rowIndex = startPosition.rowIndex + 2,
+            columnIndex = startPosition.columnIndex + 1,
+        )
+    ).filter { it.isValid() }.map { it.toPositionLabel() }
+
+    private fun rightValidLShapedMoves(startPosition: Position): List<PositionLabel> = listOf(
+        Position(
+            rowIndex = startPosition.rowIndex + 1,
+            columnIndex = startPosition.columnIndex + 2,
+        ),
+        Position(
+            rowIndex = startPosition.rowIndex - 1,
+            columnIndex = startPosition.columnIndex + 2,
+        )
+    ).filter { it.isValid() }.map { it.toPositionLabel() }
+
+    private fun backwardValidLShapedMoves(startPosition: Position): List<PositionLabel> = listOf(
+        Position(
+            rowIndex = startPosition.rowIndex - 2,
+            columnIndex = startPosition.columnIndex + 1,
+        ),
+        Position(
+            rowIndex = startPosition.rowIndex - 2,
+            columnIndex = startPosition.columnIndex - 1,
+        )
+    ).filter { it.isValid() }.map { it.toPositionLabel() }
+
+    private fun leftValidLShapedMoves(startPosition: Position): List<PositionLabel> = listOf(
+        Position(
+            rowIndex = startPosition.rowIndex - 1,
+            columnIndex = startPosition.columnIndex - 2,
+        ),
+        Position(
+            rowIndex = startPosition.rowIndex + 1,
+            columnIndex = startPosition.columnIndex - 2,
+        )
+    ).filter { it.isValid() }.map { it.toPositionLabel() }
 }
