@@ -42,30 +42,54 @@ class PositionTest {
  @Nested
  inner class HorizontalMoveValidPositions {
   @Test
-  fun `SHOULD return all horizontal positions with respect to current position`() {
+  fun `SHOULD return left horizontal positions with respect to current position`() {
    val position = Position.of("D3")
-   position.horizontalMoveValidPositions() shouldBe listOf("A3", "B3", "C3", "E3", "F3", "G3", "H3")
+   position.leftHorizontalMoveValidPositions() shouldBe listOf("C3", "B3", "A3")
   }
 
   @Test
-  fun `SHOULD return all horizontal positions with respect to current position with fixed steps`() {
+  fun `SHOULD return left horizontal positions with respect to current position with fixed steps`() {
    val position = Position.of("D3")
-   position.horizontalMoveValidPositions(1) shouldBe listOf("C3", "E3")
+   position.leftHorizontalMoveValidPositions(1) shouldBe listOf("C3")
+  }
+
+  @Test
+  fun `SHOULD return right horizontal positions with respect to current position`() {
+   val position = Position.of("D3")
+   position.rightHorizontalMoveValidPositions() shouldBe listOf("E3", "F3", "G3", "H3")
+  }
+
+  @Test
+  fun `SHOULD return right horizontal positions with respect to current position with fixed steps`() {
+   val position = Position.of("D3")
+   position.rightHorizontalMoveValidPositions(1) shouldBe listOf("E3")
   }
  }
 
  @Nested
  inner class VerticalMoveValidPositions {
   @Test
-  fun `SHOULD return all vertical positions with respect to current position`() {
+  fun `SHOULD return forward vertical positions with respect to current position`() {
    val position = Position.of("D3")
-   position.verticalMoveValidPositions() shouldBe listOf("D1", "D2", "D4", "D5", "D6", "D7", "D8")
+   position.forwardVerticalMoveValidPositions() shouldBe listOf("D4", "D5", "D6", "D7", "D8")
   }
 
   @Test
-  fun `SHOULD return all vertical positions with respect to current position with fixed steps`() {
+  fun `SHOULD return forward vertical positions with respect to current position with fixed steps`() {
    val position = Position.of("D3")
-   position.verticalMoveValidPositions(2) shouldBe listOf("D1", "D2", "D4", "D5")
+   position.forwardVerticalMoveValidPositions(2) shouldBe listOf("D4", "D5")
+  }
+
+  @Test
+  fun `SHOULD return backward vertical positions with respect to current position`() {
+   val position = Position.of("D3")
+   position.backwardVerticalMoveValidPositions() shouldBe listOf("D2", "D1")
+  }
+
+  @Test
+  fun `SHOULD return backward vertical positions with respect to current position with fixed steps`() {
+   val position = Position.of("D3")
+   position.backwardVerticalMoveValidPositions(1) shouldBe listOf("D2")
   }
  }
 

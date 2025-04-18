@@ -35,8 +35,8 @@ data class Position(
 
     fun toPositionLabel(): PositionLabel = columnsLabels[columnIndex] + rowLabels[rowIndex]
 
-    fun horizontalMoveValidPositions(steps: Int = 0): List<PositionLabel> {
-        return (0..7).filter {
+    fun leftHorizontalMoveValidPositions(steps: Int = 0): List<PositionLabel> {
+        return (columnIndex.downTo(0)).filter {
             (if (steps > 0) it >= (columnIndex - steps) && it <= (columnIndex + steps) else true) && it != columnIndex
         }.map { colIdx ->
             Position(
@@ -46,8 +46,30 @@ data class Position(
         }.filter { it.isValid() }.map { it.toPositionLabel() }
     }
 
-    fun verticalMoveValidPositions(steps: Int = 0): List<PositionLabel> {
-        return (0..7).filter {
+    fun rightHorizontalMoveValidPositions(steps: Int = 0): List<PositionLabel> {
+        return (columnIndex..7).filter {
+            (if (steps > 0) it >= (columnIndex - steps) && it <= (columnIndex + steps) else true) && it != columnIndex
+        }.map { colIdx ->
+            Position(
+                rowIndex = rowIndex,
+                columnIndex = colIdx
+            )
+        }.filter { it.isValid() }.map { it.toPositionLabel() }
+    }
+
+    fun forwardVerticalMoveValidPositions(steps: Int = 0): List<PositionLabel> {
+        return (rowIndex..7).filter {
+            (if (steps > 0) it >= (rowIndex - steps) && it <= (rowIndex + steps) else true) && it != rowIndex
+        }.map { rowIdx ->
+            Position(
+                rowIndex = rowIdx,
+                columnIndex = columnIndex
+            )
+        }.filter { it.isValid() }.map { it.toPositionLabel() }
+    }
+
+    fun backwardVerticalMoveValidPositions(steps: Int = 0): List<PositionLabel> {
+        return (rowIndex.downTo(0)).filter {
             (if (steps > 0) it >= (rowIndex - steps) && it <= (rowIndex + steps) else true) && it != rowIndex
         }.map { rowIdx ->
             Position(
